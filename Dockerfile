@@ -17,14 +17,17 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     mysql-client \
     ocaml \
-    && curl -L https://github.com/bcpierce00/unison/archive/2.48.4.tar.gz | tar zxv -C /tmp && \
+    msmtp
+
+RUN curl -L https://github.com/bcpierce00/unison/archive/2.48.4.tar.gz | tar zxv -C /tmp && \
              cd /tmp/unison-2.48.4 && \
              sed -i -e 's/GLIBC_SUPPORT_INOTIFY 0/GLIBC_SUPPORT_INOTIFY 1/' src/fsmonitor/linux/inotify_stubs.c && \
              make && \
              cp src/unison src/unison-fsmonitor /usr/local/bin && \
-             cd /root && rm -rf /tmp/unison-2.48.4 \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) mcrypt intl xsl gd zip pdo_mysql opcache \
+             cd /root && rm -rf /tmp/unison-2.48.4
+
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) mcrypt intl xsl gd zip pdo_mysql opcache soap \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && docker-php-ext-install opcache \
     && pecl install xdebug && docker-php-ext-enable xdebug \
@@ -32,8 +35,9 @@ RUN apt-get update && apt-get install -y \
     && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && mkdir /var/run/sshd \
+    && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+RUN mkdir /var/run/sshd \
     && apt-get clean && apt-get update && apt-get install -y nodejs \
     && ln -s /usr/bin/nodejs /usr/bin/node \
     && apt-get clean && apt-get update && apt-get install -y npm \
@@ -57,6 +61,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN chown magento2:magento2 /home/magento2/magento2 && \
     chown magento2:magento2 /var/www/magento2
+
+# E-Mail
+ADD conf/smtp/msmtprc /etc/msmtprc
 
 # PHP config
 ADD conf/php.ini /usr/local/etc/php
