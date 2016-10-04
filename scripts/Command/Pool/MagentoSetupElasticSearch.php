@@ -35,6 +35,16 @@ class MagentoSetupElasticSearch extends AbstractCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $elasticModuleExist = exec(
+            sprintf(
+                'cd %s && php bin/magento module:status | grep Magento_Elasticsearch',
+                $input->getOption(MagentoOptions::PATH)
+            )
+        );
+        if (!$elasticModuleExist) {
+            return;
+        }
+
         $dbConnection = Db::getConnection(
             $input->getOption(DbOptions::HOST),
             $input->getOption(DbOptions::USER),
