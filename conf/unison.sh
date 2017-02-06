@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Run in foreground to warmup
 su - magento2 -c "unison magento2"
