@@ -105,7 +105,7 @@ RUN mkdir /windows \
 
 RUN mkdir /mac-osx \
  && cd /mac-osx \
- && curl -L -o unison-mac-osx.zip http://unison-binaries.inria.fr/files/Unison-OS-X-2.48.15.zip \
+ && curl -L -o unison-mac-osx.zip http://unison-binaries.inria.fr/files/Unison-OS-X-2.48.3.zip \
  && unzip unison-mac-osx.zip \
  && rm unison-mac-osx.zip \
  && chown -R magento2:magento2 .
