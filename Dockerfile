@@ -5,6 +5,7 @@ ENV PHP_EXTRA_CONFIGURE_ARGS="--enable-fpm --with-fpm-user=magento2 --with-fpm-g
 
 RUN apt-get update && apt-get install -y \
     apt-utils \
+    build-essential \
     sudo \
     wget \
     unzip \
@@ -23,7 +24,17 @@ RUN apt-get update && apt-get install -y \
     mysql-client \
     ocaml \
     expect \
-    && curl -L https://github.com/bcpierce00/unison/archive/2.48.4.tar.gz | tar zxv -C /tmp && \
+    && curl -L http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.3.tar.gz | tar zxv -C /tmp && \
+        ln -s /usr/bin/make /usr/bin/gmake && \
+        cd /tmp/ocaml-4.02.3 && \
+        ./configure && \
+        make world && \
+        make opt && \
+        make opt.opt && \
+        umask 022 && \
+        make install && \
+        make clean && \
+    curl -L https://github.com/bcpierce00/unison/archive/2.48.4.tar.gz | tar zxv -C /tmp && \
              cd /tmp/unison-2.48.4 && \
              sed -i -e 's/GLIBC_SUPPORT_INOTIFY 0/GLIBC_SUPPORT_INOTIFY 1/' src/fsmonitor/linux/inotify_stubs.c && \
              make && \
@@ -96,16 +107,16 @@ ENV MAGENTO_ENABLE_SYNC_MARKER 0
 
 RUN mkdir /windows \
  && cd /windows \
- && curl -L -o unison-windows.zip https://www.irif.fr/~vouillon/unison/unison%202.48.3.zip \
+ && curl -L -o unison-windows.zip https://www.irif.fr/~vouillon/unison/unison%202.48.4.zip \
  && unzip unison-windows.zip \
  && rm unison-windows.zip \
- && mv 'unison 2.48.3 text.exe' unison.exe \
- && rm 'unison 2.48.3 GTK.exe' \
+ && mv 'unison 2.48.4 text.exe' unison.exe \
+ && rm 'unison 2.48.4 GTK.exe' \
  && chown -R magento2:magento2 .
 
 RUN mkdir /mac-osx \
  && cd /mac-osx \
- && curl -L -o unison-mac-osx.zip http://unison-binaries.inria.fr/files/Unison-OS-X-2.48.3.zip \
+ && curl -L -o unison-mac-osx.zip http://unison-binaries.inria.fr/files/Unison-OS-X-2.48.15.zip \
  && unzip unison-mac-osx.zip \
  && rm unison-mac-osx.zip \
  && chown -R magento2:magento2 .
