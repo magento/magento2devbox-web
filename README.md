@@ -2,7 +2,6 @@
 
 This repository is part of Magento DevBox, a simple way to install a Magento 2 development environment. 
 The repository contains a Dockerfile for the Web container which includes Apache web server, PHP and a set of scripts to install Magento. The repository is used to automatically create an image https://hub.docker.com/r/magento/magento2devbox-web/, which is used for creating the development environment which you can create here https://magento.com/tech-resources/download.
-You can find DevBox documentation here http://devdocs.magento.com/guides/v2.1/install-gde/docker/docker-over.html.
 
 # Comments, questions, bug reports, contributions?
 
@@ -56,9 +55,8 @@ This approach allows you to catch early issues related to incompatibility instea
 
 # Warmup
 
-By default, to save installation time, no warmup is performed. If you would like to use the container for demo purposes, you can enable warmup. More information is available in documention http://devdocs.magento.com/guides/v2.1/install-gde/docker/docker-commands.html.
+By default, to save installation time, no warmup is performed. If you would like to use the container for demo purposes, you can enable warmup.
 
 # Cron
 
-By default, to save batteries/energy, cron is disabled. Our experience shows, that running cron in container results in very quick draining of laptop batteries. To enable cron, you can follow the instructions in the documentation http://devdocs.magento.com/guides/v2.1/install-gde/docker/docker-commands.html.
-
+By default, to save batteries/energy, cron is disabled. Our experience shows, that running cron in container results in very quick draining of laptop batteries.
